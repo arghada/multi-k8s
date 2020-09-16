@@ -24,19 +24,6 @@ before_install:
 script:
   - docker run -e CI=true arghada/react-test npm test
 
-after_success:
-  - docker build -t arghada/multi-client ./client
-  - docker build -t arghada/multi-nginx ./nginx
-  - docker build -t arghada/multi-server ./server
-  - docker build -t arghada/multi-worker ./worker
-  # Log in to the docker CLI
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  # Take those images and push them to docker hub
-  - docker push arghada/multi-client
-  - docker push arghada/multi-nginx
-  - docker push arghada/multi-server
-  - docker push arghada/multi-worker
-
 deploy:
   provider: script
   script: bash ./deploy.sh
